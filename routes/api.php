@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('register', 'App\Http\Controllers\UsersController@register')->withoutMiddleware(['api', 'auth']);
-Route::post('login', 'App\Http\Controllers\AuthController@login')->name('login');
+Route::get('login', 'App\Http\Controllers\AuthController@login')->name('login');
 
 //User
 Route::get('user', 'App\Http\Controllers\AuthController@UserLogged')->middleware('auth:api');
