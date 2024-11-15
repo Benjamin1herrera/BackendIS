@@ -19,17 +19,20 @@ class UsersController extends Controller
                     if (!$this->validarRut($value)) {
                         $fail('El RUT ingresado no es válido');
                     }
-                    // Validación para evitar RUT duplicados
-                    if (User::where('rut', strtoupper($value))->exists()) {
-                        $fail('El RUT ya está registrado');
-                    }
                 }],
                 'name' => 'required|string|min:3|max:255',
                 'lastname1' => 'required|string|min:3|max:255',
                 'lastname2' => 'required|string|min:3|max:255',
+                'phone' => ['required', 'string', function ($attribute, $value, $fail) {
+                    // Expresión regular para validar el formato +56 y 9 dígitos
+                    if (!preg_match('/^\+56\d{9}$/', $value)) {
+                        $fail('El teléfono móvil ingresado no es válido , Verifique si cuenta con el numero de area (+56)');
+                    }
+                }],
                 'email' => 'required|email|unique:users',
                 'role' => 'required|string'
             ], $messages);
+            
 
             $roleValidate = Role::where('name', $request->role)->first();
 
@@ -54,6 +57,7 @@ class UsersController extends Controller
             $user->name = $request->name;
             $user->lastname1 = $request->lastname1;
             $user->lastname2 = $request->lastname2;
+            $user->phone = $request->phone;
             $user->email = $request->email;
             $user->password = strtoupper($request->rut);  // La contraseña es el RUT, puedes modificar esto si es necesario
             $user->role_id = $roleValidate->id;
