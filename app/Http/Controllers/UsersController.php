@@ -14,18 +14,22 @@ class UsersController extends Controller
         try {
 
             $messages = $this->makeMessage();
-             $request->validate([
-            'rut' => ['required', 'string', 'min:8', 'max:9', function ($attribute, $value, $fail) {
-                if (!$this->validarRut($value)) {
-                    $fail('El RUT ingresado no es válido');
-                }
-            }],
-            'name' => 'required|string|min:3|max:255',
-            'lastname1' => 'required|string|min:3|max:255',
-            'lastname2' => 'required|string|min:3|max:255',
-            'email' => 'required|email|unique:users',
-            'role' => 'required|string'
-        ], $messages);
+            $request->validate([
+                'rut' => ['required', 'string', 'min:8', 'max:9', function ($attribute, $value, $fail) {
+                    if (!$this->validarRut($value)) {
+                        $fail('El RUT ingresado no es válido');
+                    }
+                    // Validación para evitar RUT duplicados
+                    if (User::where('rut', strtoupper($value))->exists()) {
+                        $fail('El RUT ya está registrado');
+                    }
+                }],
+                'name' => 'required|string|min:3|max:255',
+                'lastname1' => 'required|string|min:3|max:255',
+                'lastname2' => 'required|string|min:3|max:255',
+                'email' => 'required|email|unique:users',
+                'role' => 'required|string'
+            ], $messages);
 
             $roleValidate = Role::where('name', $request->role)->first();
 
@@ -44,14 +48,14 @@ class UsersController extends Controller
                     'error' => true
                 ], 400);
             }
+
             $user = new User();
-            
             $user->rut = strtoupper($request->rut);
             $user->name = $request->name;
             $user->lastname1 = $request->lastname1;
             $user->lastname2 = $request->lastname2;
             $user->email = $request->email;
-            $user->password = strtoupper($request->rut);
+            $user->password = strtoupper($request->rut);  // La contraseña es el RUT, puedes modificar esto si es necesario
             $user->role_id = $roleValidate->id;
             $user->save();
 
@@ -88,13 +92,13 @@ class UsersController extends Controller
         }
     }
 
-    public function delete(Request $request){
-        try{
-        
+    public function delete(Request $request)
+    {
+        try {
             $userId = $request->id;
 
             $user = User::where('id', $userId)->first();
-            if (!$user){
+            if (!$user) {
                 return response([
                     'message' => 'El usuario no existe',
                     'data' => [],
@@ -108,8 +112,8 @@ class UsersController extends Controller
                 'data' => [],
                 'error' => false
             ], 200);
-            
-        }catch (\Exception $e){
+
+        } catch (\Exception $e) {
             return response([
                 'message' => 'Error al eliminar el usuario',
                 'data' => [],
@@ -118,8 +122,8 @@ class UsersController extends Controller
         }
     }
 
-
-    function makeMessage(){
+    function makeMessage()
+    {
         $messages = [
             'name.required' => 'El nombre es requerido',
             'name.string' => 'El nombre debe ser un texto',
@@ -136,7 +140,6 @@ class UsersController extends Controller
         return $messages;
     }
 
-    
     function validarRut($rut)
     {
         // Eliminar puntos y guion
@@ -144,7 +147,7 @@ class UsersController extends Controller
 
         // Verificar que el RUT tenga una longitud válida
         if (strlen($rut) < 8 || strlen($rut) > 9) {
-        return false;
+            return false;
         }
         // Separar el número y el dígito verificador
         $numero = substr($rut, 0, -1);
@@ -152,7 +155,7 @@ class UsersController extends Controller
 
         // Verificar que el dígito verificador sea válido
         if (!preg_match('/^[0-9K]$/', $dv)) {
-        return false;
+            return false;
         }
 
         // Validación del cálculo del dígito verificador
@@ -160,8 +163,8 @@ class UsersController extends Controller
         $factor = 2;
 
         for ($i = strlen($numero) - 1; $i >= 0; $i--) {
-        $sum += (int)$numero[$i] * $factor;
-        $factor = $factor == 7 ? 2 : $factor + 1;
+            $sum += (int)$numero[$i] * $factor;
+            $factor = $factor == 7 ? 2 : $factor + 1;
         }
 
         $mod = $sum % 11;
