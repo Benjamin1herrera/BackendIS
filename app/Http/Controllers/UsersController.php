@@ -14,8 +14,16 @@ class UsersController extends Controller
         try {
 
             $messages = $this->makeMessage();
+
             $request->validate([
+                'rut' => ['required', 'string', 'min:8', 'max:9', function ($attribute, $value, $fail) {
+                    if (!$this->validarRut($value)) {
+                        $fail('El RUT ingresado no es válido');
+                    }
+                }],
                 'name' => 'required|string|min:3|max:255',
+                'apellido1' => 'required|string|min:3|max:255',
+                'apellido2' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string',
                 'role' => 'required|string'
@@ -39,8 +47,11 @@ class UsersController extends Controller
                 ], 400);
             }
             $user = new User();
-
+            
+            $user->rut = strtoupper($request->rut);
             $user->name = $request->name;
+            $user->lastname1 = $request->lastname1;
+            $user->lastname2 = $request->lastname2;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->role_id = $roleValidate->id;
@@ -126,4 +137,44 @@ class UsersController extends Controller
         ];
         return $messages;
     }
+
+    function validarRut($rut)
+    {
+        // Eliminar puntos y guion
+        $rut = str_replace(['.', '-'], '', $rut);
+
+        // Verificar que el RUT tenga una longitud válida
+        if (strlen($rut) < 8 || strlen($rut) > 9) {
+        return false;
+        }
+        // Separar el número y el dígito verificador
+        $numero = substr($rut, 0, -1);
+        $dv = strtoupper(substr($rut, -1));
+
+        // Verificar que el dígito verificador sea válido
+        if (!preg_match('/^[0-9K]$/', $dv)) {
+        return false;
+        }
+
+        // Validación del cálculo del dígito verificador
+        $sum = 0;
+        $factor = 2;
+
+        for ($i = strlen($numero) - 1; $i >= 0; $i--) {
+        $sum += (int)$numero[$i] * $factor;
+        $factor = $factor == 7 ? 2 : $factor + 1;
+        }
+
+        $mod = $sum % 11;
+        $calculatedDv = 11 - $mod;
+
+        if ($calculatedDv == 11) {
+            $calculatedDv = 0;
+        } elseif ($calculatedDv == 10) {
+            $calculatedDv = 'K';
+        }
+
+        return $dv == $calculatedDv;
+    }
+
 }

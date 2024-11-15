@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -18,12 +19,20 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
+        'rut',
         'name',
+        'lastname1',
+        'lastname2',
         'email',
         'password',
+        'role_id',
     ];
 
-    public function role(){
+    /**
+     * The relationship with the Role model.
+     */
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
@@ -47,7 +56,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -69,5 +77,13 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Function that stores the RUT in uppercase letters
+     */
+    public function setRutAttribute($value)
+    {
+        $this->attributes['rut'] = strtoupper($value);
     }
 }
