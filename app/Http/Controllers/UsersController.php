@@ -22,8 +22,8 @@ class UsersController extends Controller
                     }
                 }],
                 'name' => 'required|string|min:3|max:255',
-                'apellido1' => 'required|string|min:3|max:255',
-                'apellido2' => 'required|string|min:3|max:255',
+                'lastname1' => 'required|string|min:3|max:255',
+                'lastname2' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string',
                 'role' => 'required|string'
