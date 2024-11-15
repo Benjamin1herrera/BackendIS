@@ -14,20 +14,18 @@ class UsersController extends Controller
         try {
 
             $messages = $this->makeMessage();
-
-            $request->validate([
-                'rut' => ['required', 'string', 'min:8', 'max:9', function ($attribute, $value, $fail) {
-                    if (!$this->validarRut($value)) {
-                        $fail('El RUT ingresado no es válido');
-                    }
-                }],
-                'name' => 'required|string|min:3|max:255',
-                'lastname1' => 'required|string|min:3|max:255',
-                'lastname2' => 'required|string|min:3|max:255',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|string',
-                'role' => 'required|string'
-            ], $messages);
+             $request->validate([
+            'rut' => ['required', 'string', 'min:8', 'max:9', function ($attribute, $value, $fail) {
+                if (!$this->validarRut($value)) {
+                    $fail('El RUT ingresado no es válido');
+                }
+            }],
+            'name' => 'required|string|min:3|max:255',
+            'lastname1' => 'required|string|min:3|max:255',
+            'lastname2' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:users',
+            'role' => 'required|string'
+        ], $messages);
 
             $roleValidate = Role::where('name', $request->role)->first();
 
@@ -53,7 +51,7 @@ class UsersController extends Controller
             $user->lastname1 = $request->lastname1;
             $user->lastname2 = $request->lastname2;
             $user->email = $request->email;
-            $user->password = bcrypt($request->password);
+            $user->password = strtoupper($request->rut);
             $user->role_id = $roleValidate->id;
             $user->save();
 
@@ -138,6 +136,7 @@ class UsersController extends Controller
         return $messages;
     }
 
+    
     function validarRut($rut)
     {
         // Eliminar puntos y guion
@@ -173,8 +172,6 @@ class UsersController extends Controller
         } elseif ($calculatedDv == 10) {
             $calculatedDv = 'K';
         }
-
         return $dv == $calculatedDv;
     }
-
 }
