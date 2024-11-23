@@ -126,6 +126,56 @@ class UsersController extends Controller
         }
     }
 
+    public function changePassword(Request $request)
+    {
+        try {
+            // Validaciones
+            $messages = [
+                'email.required' => 'El correo es requerido',
+                'email.email' => 'El correo debe ser válido',
+                'email.exists' => 'El correo ingresado no está registrado',
+                'new_password.required' => 'La nueva contraseña es requerida',
+                'new_password.min' => 'La nueva contraseña debe tener al menos 8 caracteres',
+            ];
+    
+            $request->validate([
+                'email' => 'required|email|exists:users,email',
+                'new_password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    function ($attribute, $value, $fail) {
+                        if (!preg_match('/[A-Z]/', $value) || !preg_match('/\d/', $value)) {
+                            $fail('La nueva contraseña no cumple con los estándares de seguridad');
+                        }
+                    },
+                ],
+            ], $messages);
+    
+            // Buscar el usuario
+            $user = User::where('email', $request->email)->first();
+    
+            // Actualizar la contraseña
+            $user->password = bcrypt($request->new_password);
+            $user->save();
+    
+            return response([
+                'message' => 'Contraseña actualizada con éxito',
+                'data' => [],
+                'error' => false,
+            ], 200);
+    
+        } catch (\Exception $e) {
+            return response([
+                'message' => 'Error al cambiar la contraseña',
+                'data' => [],
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
+    
+
     function makeMessage()
     {
         $messages = [
