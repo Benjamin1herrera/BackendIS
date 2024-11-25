@@ -15,3 +15,6 @@ Route::get('user', 'App\Http\Controllers\AuthController@UserLogged')->middleware
 Route::post('user/logout', 'App\Http\Controllers\AuthController@logout')->middleware('auth:api');
 Route::get('user/getAll', 'App\Http\Controllers\UsersController@getAll')->middleware('auth:api');
 Route::delete('user/delete/{id}', 'App\Http\Controllers\UsersController@delete')->middleware('auth:api');
+
+//Manage Clients
+Route::get('user/manageCustomers', 'App\Http\Controllers\UsersController@manageCustomers')->withoutMiddleware('auth:api');

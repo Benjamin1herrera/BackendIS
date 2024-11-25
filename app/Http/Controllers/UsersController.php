@@ -173,7 +173,34 @@ class UsersController extends Controller
             ], 500);
         }
     }
-    
+
+
+    public function manageCustomers(Request $request)
+{
+    try {    
+      
+        $page = $request->has('page') ? $request->page : 1;
+        $perPage = $request->has('per_page') ? $request->per_page : 10; 
+
+        // Obtener la lista de clientes con paginacion
+        $customers = User::select('name', 'lastname1', 'lastname2', 'rut', 'phone', 'email')
+            ->where('role_id', 1) // Se asegura que solo sean clientes
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response([
+            'message' => 'Clientes obtenidos con éxito',
+            'data' => $customers->items(),
+            'error' => false,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response([
+            'message' => 'Error al obtener la lista de clientes',
+            'data' => [],
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
     
 
     function makeMessage()
