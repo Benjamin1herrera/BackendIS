@@ -29,16 +29,6 @@ class AuthController extends BaseController
             ], 401);
         }
 
-        // Validar si el usuario está deshabilitado
-        if (!$user->status) {
-           // Cerrar la sesión inmediatamente
-           auth()->logout();
-           return response([
-                'message' => 'Su cuenta está deshabilitada. Por favor, contacte con el administrador.',
-                'data' => [],
-                'error' => true
-            ], 403);
-        }
 
         $user = Auth::user();
         return response([
