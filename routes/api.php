@@ -7,6 +7,9 @@ Route::post('login', 'App\Http\Controllers\AuthController@login')->name('login')
 // Register
 Route::post('register', 'App\Http\Controllers\UsersController@register')->withoutMiddleware(['api', 'auth']);
 
+//RegisterClient
+Route::post('register-client', 'App\Http\Controllers\UsersController@registerClient')->withoutMiddleware(['api', 'auth']);
+
 // Change Password
 Route::post('change-password', 'App\Http\Controllers\UsersController@changePassword')->withoutMiddleware(['api', 'auth']);
 
