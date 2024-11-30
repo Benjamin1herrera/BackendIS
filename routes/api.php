@@ -13,6 +13,10 @@ Route::post('register-client', 'App\Http\Controllers\UsersController@registerCli
 // Product routes
 Route::post('registerproduct', 'App\Http\Controllers\ProductController@registerNewProduct')->withoutMiddleware(['api', 'auth']);
 
+// Rutas para deshabilitar y habilitar usuarios
+Route::post('disableuser', 'App\Http\Controllers\UsersController@disableUser')->withoutMiddleware(['api', 'auth']);
+Route::post('enableuser', 'App\Http\Controllers\UsersController@enableUser')->withoutMiddleware(['api', 'auth']);
+
 // Change Password
 Route::post('change-password', 'App\Http\Controllers\UsersController@changePassword')->withoutMiddleware(['api', 'auth']);
 

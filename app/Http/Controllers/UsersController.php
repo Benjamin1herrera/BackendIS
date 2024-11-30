@@ -61,6 +61,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->password = strtoupper($request->rut);  // La contraseña es el RUT, puedes modificar esto si es necesario
             $user->role_id = $roleValidate->id;
+            $user->isEnable = true;
             $user->save();
 
             return response([
@@ -178,6 +179,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->password = strtoupper($request->rut); // La contraseña es el RUT, puedes modificar esto si es necesario
             $user->role_id = $role->id; // Asignar automáticamente el rol "Cliente"
+            $user->isEnable = true;
             $user->save();
     
             return response([
@@ -244,6 +246,46 @@ class UsersController extends Controller
         }
     }
 
+    public function disableUser(Request $request)
+    {
+        $request->validate(['rut' => 'required|string']);
+    
+        $user = User::where('rut', $request->rut)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        if (!$user->isEnable) {
+            return response()->json(['message' => 'El usuario ya está deshabilitado'], 400);
+        }
+    
+        $user->isEnable = false;
+        $user->save();
+    
+        return response()->json(['message' => 'Usuario deshabilitado exitosamente'], 200);
+    }
+    
+    public function enableUser(Request $request)
+    {
+        $request->validate(['rut' => 'required|string']);
+    
+        $user = User::where('rut', $request->rut)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        if ($user->isEnable) {
+            return response()->json(['message' => 'El usuario ya está habilitado'], 400);
+        }
+    
+        $user->isEnable = true;
+        $user->save();
+    
+        return response()->json(['message' => 'Usuario habilitado exitosamente'], 200);
+    }
+    
 
     public function manageCustomers(Request $request)
 {
