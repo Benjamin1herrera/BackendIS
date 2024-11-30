@@ -248,14 +248,21 @@ class UsersController extends Controller
     public function manageCustomers(Request $request)
 {
     try {    
-      
         $page = $request->has('page') ? $request->page : 1;
         $perPage = $request->has('per_page') ? $request->per_page : 10; 
 
-        // Obtener la lista de clientes con paginacion
+        // Obtener la lista de clientes con paginación
         $customers = User::select('name', 'lastname1', 'lastname2', 'rut', 'phone', 'email')
             ->where('role_id', 1) // Se asegura que solo sean clientes
             ->paginate($perPage, ['*'], 'page', $page);
+
+        if ($customers->isEmpty()) {
+            return response([
+                'message' => 'No hay clientes registrados',
+                'data' => [],
+                'error' => false,
+            ], 200);
+        }
 
         return response([
             'message' => 'Clientes obtenidos con éxito',
@@ -271,6 +278,7 @@ class UsersController extends Controller
         ], 500);
     }
 }
+
     
 
     function makeMessage()
