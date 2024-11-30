@@ -10,6 +10,9 @@ Route::post('register', 'App\Http\Controllers\UsersController@register')->withou
 //RegisterClient
 Route::post('register-client', 'App\Http\Controllers\UsersController@registerClient')->withoutMiddleware(['api', 'auth']);
 
+// Product routes
+Route::post('registerproduct', 'App\Http\Controllers\ProductController@registerNewProduct')->withoutMiddleware(['api', 'auth']);
+
 // Change Password
 Route::post('change-password', 'App\Http\Controllers\UsersController@changePassword')->withoutMiddleware(['api', 'auth']);
 
