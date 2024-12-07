@@ -14,15 +14,15 @@ class Role extends Seeder
     public function run(): void
     {
         RoleModel::create([
+            'name' => 'Cliente'
+        ]);
+
+        RoleModel::create([
             'name' => 'Administrador'
         ]);
 
         RoleModel::create([
             'name' => 'Trabajador'
-        ]);
-
-        RoleModel::create([
-            'name' => 'Cliente'
         ]);
     }
 }
