@@ -294,7 +294,7 @@ class UsersController extends Controller
         $perPage = $request->has('per_page') ? $request->per_page : 10; 
 
         // Obtener la lista de clientes con paginación
-        $customers = User::select('name', 'lastname1', 'lastname2', 'rut', 'phone', 'email')
+        $customers = User::select('name', 'lastname1', 'lastname2', 'rut', 'phone', 'email','isEnable')
             ->where('role_id', 1) // Se asegura que solo sean clientes
             ->paginate($perPage, ['*'], 'page', $page);
 
