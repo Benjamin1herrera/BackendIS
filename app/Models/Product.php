@@ -17,5 +17,6 @@ class Product extends Model
         'isEnable',
         'type',
         'ISBN',
+        'stock',
     ];
 }

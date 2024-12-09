@@ -19,7 +19,8 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->boolean('isEnable');
             $table->string('type');
-            $table->string('ISBN');
+            $table->string('ISBN')->unique();
+            $table->integer('stock');
             $table->timestamps();
         });
     }
