@@ -1,0 +1,84 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Product;
+
+class productSeeder extends Seeder
+{
+
+    public function run(): void
+    {
+        //Books
+
+        Product::create([
+            'title' => 'To Kill a Mockingbird',
+            'creator' => 'Harper Lee',
+            'year' => 1960,
+            'price' => 15.99,
+            'ISBN' => '1234',
+            'stock' => 100,
+            'isEnable' => true,
+            'type' => 'book',
+        ]);
+
+        Product::create([
+            'title' => '1984',
+            'creator' => 'George Orwell',
+            'year' => 1949,
+            'price' => 12.50,
+            'ISBN' => '5678',
+            'stock' => 150,
+            'isEnable' => true,
+            'type' => 'book',
+        ]);
+
+        Product::create([
+            'title' => 'Pride and Prejudice',
+            'creator' => 'Jane Austen',
+            'year' => 1813,
+            'price' => 11.25,
+            'ISBN' => '91011',
+            'stock' => 120,
+            'isEnable' => true,
+            'type' => 'book',
+        ]);
+
+        // Movies
+
+        Product::create([
+            'title' => 'Inception',
+            'creator' => 'Christopher Nolan',
+            'year' => 2010,
+            'price' => 19.99,
+            'ISBN' => null,
+            'stock' => 50,
+            'isEnable' => true,
+            'type' => 'movie',
+        ]);
+
+        Product::create([
+            'title' => 'The Matrix',
+            'creator' => 'Lana Wachowski, Lilly Wachowski',
+            'year' => 1999,
+            'price' => 14.99,
+            'ISBN' => null,
+            'stock' => 75,
+            'isEnable' => true,
+            'type' => 'movie',
+        ]);
+
+        Product::create([
+            'title' => 'The Shawshank Redemption',
+            'creator' => 'Frank Darabont',
+            'year' => 1994,
+            'price' => 13.50,
+            'ISBN' => null,
+            'stock' => 40,
+            'isEnable' => true,
+            'type' => 'movie',
+        ]);
+    }
+}

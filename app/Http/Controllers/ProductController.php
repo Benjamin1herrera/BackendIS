@@ -88,6 +88,45 @@ class ProductController extends Controller
         }
     }
 
+    public function registerNewMovie(Request $request)
+    {
+        try
+        {
+            $messages = $this->makeMessage();
+            $request->validate([
+                'title' => 'required|string|max:255',  
+                'creator' => 'required|string|max:255', 
+                'year' => 'required|integer',            
+                'price' => 'required|numeric|min:0',           
+                'stock' => 'required|integer',     
+            ], $messages);
+
+            $product = new Product();
+            $product->title = $request->title;
+            $product->creator = $request->creator;
+            $product->year = $request->year;
+            $product->price = $request->price;
+            $product->isEnable = true;
+            $product->type = "movie";
+            $product->ISBN = $request->ISBN;
+            $product->stock = $request->stock;
+            $product->save();
+
+            return response([
+                'message' => 'Producto registrado',
+                'data' => $product,
+                'error' => false,
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response([
+                'message' => 'Error al registrar el Producto',
+                'data' => [],
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     function makeMessage()
     {
         $messages = [
