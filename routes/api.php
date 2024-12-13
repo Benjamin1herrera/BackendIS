@@ -14,6 +14,8 @@ Route::post('register-client', 'App\Http\Controllers\UsersController@registerCli
 Route::post('registerproduct', 'App\Http\Controllers\ProductController@registerNewProduct')->withoutMiddleware(['api', 'auth']);
 Route::post('registerbook', 'App\Http\Controllers\ProductController@registerNewBook')->withoutMiddleware(['api', 'auth']);
 Route::post('registermovie', 'App\Http\Controllers\ProductController@registerNewMovie')->withoutMiddleware(['api', 'auth']);
+Route::get('getallproducts', 'App\Http\Controllers\ProductController@getAllProducts')->withoutMiddleware(['api','auth']);
+
 
 // Rutas para deshabilitar y habilitar usuarios
 Route::post('disableuser', 'App\Http\Controllers\UsersController@disableUser')->withoutMiddleware(['api', 'auth']);

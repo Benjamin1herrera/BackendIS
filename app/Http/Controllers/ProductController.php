@@ -127,6 +127,24 @@ class ProductController extends Controller
         }
     }
 
+    public function getAllProducts()
+    {
+        try {
+            $product = Product::all();
+            return response([
+                'message' => 'Productos obtenidos',
+                'data' => $product,
+                'error' => false
+            ], 200);
+        } catch (\Exception $e) {
+            return response([
+                'message' => 'Error al obtener los Productos',
+                'data' => [],
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     function makeMessage()
     {
         $messages = [
