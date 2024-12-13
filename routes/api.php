@@ -32,3 +32,4 @@ Route::delete('user/delete/{id}', 'App\Http\Controllers\UsersController@delete')
 
 //Manage Clients
 Route::get('user/manageCustomers', 'App\Http\Controllers\UsersController@manageCustomers')->withoutMiddleware('auth:api');
+Route::get('user/manageWorkers', 'App\Http\Controllers\UsersController@manageWorkers')->withoutMiddleware('auth:api');

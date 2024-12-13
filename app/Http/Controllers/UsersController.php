@@ -321,6 +321,41 @@ class UsersController extends Controller
     }
 }
 
+    public function manageWorkers(Request $request)
+    {
+        try {    
+            $page = $request->has('page') ? $request->page : 1;
+            $perPage = $request->has('per_page') ? $request->per_page : 10; 
+    
+            // Obtener la lista de clientes con paginación
+            $customers = User::select('name', 'lastname1', 'lastname2', 'rut', 'phone', 'email','isEnable')
+                ->where('role_id', 2) // Se asegura que solo sean clientes
+                ->paginate($perPage, ['*'], 'page', $page);
+    
+            if ($customers->isEmpty()) {
+                return response([
+                    'message' => 'No hay clientes registrados',
+                    'data' => [],
+                    'error' => false,
+                ], 200);
+            }
+    
+            return response([
+                'message' => 'Trabajadores obtenidos con éxito',
+                'data' => $customers->items(),
+                'error' => false,
+            ], 200);
+    
+        } catch (\Exception $e) {
+            return response([
+                'message' => 'Error al obtener la lista de clientes',
+                'data' => [],
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    
+    }
+
     
 
     function makeMessage()
