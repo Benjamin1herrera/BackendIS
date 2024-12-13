@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -284,6 +285,48 @@ class UsersController extends Controller
         $user->save();
     
         return response()->json(['message' => 'Usuario habilitado exitosamente'], 200);
+    }
+    
+
+    public function updateContactInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'rut' => 'required|string',
+            'email' => 'nullable|email',
+            'phone' => [
+                'nullable', 'string', function ($attribute, $value, $fail) {
+                    if (!preg_match('/^\+56\d{9}$/', $value)) {
+                        $fail('El teléfono móvil ingresado no es válido. Verifique si cuenta con el número de área (+56)');
+                    }
+                }
+            ],
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        $user = User::where('rut', $request->rut)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        if ($request->has('email')) {
+            $user->email = $request->email;
+        }
+    
+        if ($request->has('phone')) {
+            $user->phone = $request->phone;
+        }
+    
+        if (!$request->has('email') && !$request->has('phone')) {
+            return response()->json(['message' => 'No se proporcionaron datos para actualizar'], 400);
+        }
+    
+        $user->save();
+    
+        return response()->json(['message' => 'Información de contacto actualizada exitosamente'], 200);
     }
     
 
