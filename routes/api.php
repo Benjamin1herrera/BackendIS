@@ -33,3 +33,13 @@ Route::delete('user/delete/{id}', 'App\Http\Controllers\UsersController@delete')
 //Manage Clients
 Route::get('user/manageCustomers', 'App\Http\Controllers\UsersController@manageCustomers')->withoutMiddleware('auth:api');
 Route::get('user/manageWorkers', 'App\Http\Controllers\UsersController@manageWorkers')->withoutMiddleware('auth:api');
+
+// Rutas para Carrito de Compras
+Route::post('carrocompras/addproduct', 'App\Http\Controllers\CarroComprasController@addproduct')->withoutMiddleware('auth:api');
+Route::post('carrocompras/removeproduct', 'App\Http\Controllers\CarroComprasController@removeProduct')->withoutMiddleware('auth:api');
+Route::post('carrocompras/clear', 'App\Http\Controllers\CarroComprasController@clearCart')->withoutMiddleware('auth:api');
+Route::get('carrocompras/getall', 'App\Http\Controllers\CarroComprasController@getAllCartItems')->withoutMiddleware('auth:api');
+Route::get('carrocompras/calculate-total', 'App\Http\Controllers\CarroComprasController@calculateTotalRental')->withoutMiddleware('auth:api');
+
+// Rutas para Solicitudes de Arriendo
+Route::get('solicitudes', 'App\Http\Controllers\SolicitudesArriendoController@index')->withoutMiddleware('auth:api');

@@ -14,6 +14,7 @@ class productSeeder extends Seeder
         //Books
 
         Product::create([
+            'id' => 1,
             'title' => 'To Kill a Mockingbird',
             'creator' => 'Harper Lee',
             'year' => 1960,
@@ -25,6 +26,7 @@ class productSeeder extends Seeder
         ]);
 
         Product::create([
+            'id' => 2,
             'title' => '1984',
             'creator' => 'George Orwell',
             'year' => 1949,
@@ -36,6 +38,7 @@ class productSeeder extends Seeder
         ]);
 
         Product::create([
+            'id' => 3,
             'title' => 'Pride and Prejudice',
             'creator' => 'Jane Austen',
             'year' => 1813,
@@ -49,6 +52,7 @@ class productSeeder extends Seeder
         // Movies
 
         Product::create([
+            'id' => 4,
             'title' => 'Inception',
             'creator' => 'Christopher Nolan',
             'year' => 2010,
@@ -60,6 +64,7 @@ class productSeeder extends Seeder
         ]);
 
         Product::create([
+            'id' => 5,
             'title' => 'The Matrix',
             'creator' => 'Lana Wachowski, Lilly Wachowski',
             'year' => 1999,
@@ -71,6 +76,7 @@ class productSeeder extends Seeder
         ]);
 
         Product::create([
+            'id' => 6,
             'title' => 'The Shawshank Redemption',
             'creator' => 'Frank Darabont',
             'year' => 1994,
