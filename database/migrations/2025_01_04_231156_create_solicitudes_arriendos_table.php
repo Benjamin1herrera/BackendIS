@@ -11,10 +11,11 @@ return new class extends Migration
         Schema::create('solicitudes_arriendo', function (Blueprint $table) {
             $table->id();
             $table->string('rut_solicitante');
+            $table->string('name_client'); // Cambiado a snake_case
             $table->string('state');
             $table->decimal('cost', 10, 2);
             $table->dateTime('date');
-            $table->text('products');  // Almacenar los productos como JSON
+            $table->string('products');
             $table->timestamps();
         });
     }
