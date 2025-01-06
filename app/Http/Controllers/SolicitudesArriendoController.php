@@ -153,5 +153,33 @@ class SolicitudesArriendoController extends Controller
         }
     }
 
+    public function getAllRequests(Request $request)
+    {
+        try {
+            $solicitudes = solicitudesArriendo::all();
+            
+            if ($solicitudes->isEmpty()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No requests found',
+                    'solicitudes' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Requests retrieved successfully',
+                'solicitudes' => $solicitudes
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving requests',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
 }
