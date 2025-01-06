@@ -41,5 +41,7 @@ Route::post('carrocompras/clear', 'App\Http\Controllers\CarroComprasController@c
 Route::get('carrocompras/getall', 'App\Http\Controllers\CarroComprasController@getAllCartItems')->withoutMiddleware('auth:api');
 Route::get('carrocompras/calculate-total', 'App\Http\Controllers\CarroComprasController@calculateTotalRental')->withoutMiddleware('auth:api');
 
-// Rutas para Solicitudes de Arriendo
-Route::get('solicitudes', 'App\Http\Controllers\SolicitudesArriendoController@index')->withoutMiddleware('auth:api');
+//Rutas para Solicitudes De Arriendo 
+Route::post('solicitudesarriendo/transfer-from-cart', 'App\Http\Controllers\SolicitudesArriendoController@transferFromCart')->withoutMiddleware('auth:api');
+Route::post('solicitudesarriendo/approve-request', 'App\Http\Controllers\SolicitudesArriendoController@approveRequest')->withoutMiddleware('auth:api');
+Route::post('solicitudesarriendo/reject-request', 'App\Http\Controllers\SolicitudesArriendoController@rejectRequest')->withoutMiddleware('auth:api');
