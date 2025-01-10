@@ -210,7 +210,7 @@ class CarroComprasController extends Controller
                     'success' => true,
                     'message' => 'El carrito está vacío.',
                     'data' => [
-                        'total' => 0,
+                        'total' => '0.000',
                         'details' => []
                     ]
                 ], 200);
@@ -219,17 +219,17 @@ class CarroComprasController extends Controller
             $details = [];
             $totalCost = 0;
     
-            // Calcular el costo por cada item
+            // Calcular el costo por cada ítem y formatearlo
             foreach ($cartItems as $item) {
-                $itemTotal = $item->quantity * $item->price * $item->days_rent;
+                $itemTotal = round($item->quantity * $item->price * $item->days_rent, 3); // Limitar a 3 decimales
                 $totalCost += $itemTotal;
     
                 $details[] = [
                     'product' => $item->title,
                     'quantity' => $item->quantity,
-                    'price_per_day' => $item->price,
+                    'price_per_day' => number_format($item->price, 3, '.', ''), // Limitar a 3 decimales
                     'days_rent' => $item->days_rent,
-                    'subtotal' => $itemTotal
+                    'subtotal' => number_format($itemTotal, 3, '.', '') // Subtotal con 3 decimales
                 ];
             }
     
@@ -237,7 +237,7 @@ class CarroComprasController extends Controller
                 'success' => true,
                 'message' => 'Cálculo realizado exitosamente.',
                 'data' => [
-                    'total_cost' => $totalCost,
+                    'total_cost' => number_format($totalCost, 3, '.', ''), // Total con 3 decimales
                     'details' => $details
                 ]
             ], 200);
