@@ -181,5 +181,39 @@ class SolicitudesArriendoController extends Controller
         }
     }
 
-
+    public function getRequestsByRut(Request $request)
+    {
+        try {
+            // Validar que el RUT sea enviado en el request
+            $request->validate([
+                'rut' => 'required|string'
+            ]);
+    
+            // Buscar las solicitudes asociadas al RUT
+            $rut = $request->rut;
+            $solicitudes = solicitudesArriendo::where('rut_solicitante', $rut)->get();
+    
+            if ($solicitudes->isEmpty()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No se encontraron solicitudes para el RUT proporcionado.',
+                    'solicitudes' => []
+                ], 200);
+            }
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Solicitudes recuperadas exitosamente.',
+                'solicitudes' => $solicitudes
+            ], 200);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al recuperar las solicitudes.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
 }
