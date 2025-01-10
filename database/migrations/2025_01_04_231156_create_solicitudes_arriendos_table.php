@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('rut_solicitante');
             $table->string('name_client'); // Cambiado a snake_case
             $table->string('state');
-            $table->decimal('cost', 10, 2);
+            $table->decimal('cost', 8, 3);
             $table->dateTime('date');
             $table->string('products');
             $table->timestamps();

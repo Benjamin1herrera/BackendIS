@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('creator');
             $table->integer('year');
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 8, 3);
             $table->boolean('isEnable');
             $table->string('type');
             $table->string('ISBN')->unique()->nullable();
